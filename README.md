@@ -2,14 +2,14 @@
 Celem zadania pierwszego jest zaimplementowanie i porównanie ze sobą dwóch metod rozwiązywania (znajdowania miejsca zerowego) równań nieliniowych. Każda z grup laboratoryjnych implementuje metodę bisekcji oraz jeden z wariantów przydzielony przez prowadzącego. Dostępne warianty to:
 
 Metody wyznaczania miejsca zerowego:
-Wariant 0: Metoda bisekcji
-Wariant 1: Metoda stycznych
-Wariant 2: Metoda siecznych
-Wariant 3: Regula falsi
+- Wariant 0: Metoda bisekcji
+- Wariant 1: Metoda stycznych
+- Wariant 2: Metoda siecznych
+- Wariant 3: Regula falsi
 
 Oszacowanie dokładności wyniku:
-Wariant A: |xi−xi−1|<ε
-Wariant B: |f(xi)|<ε
+- Wariant A: |xi−xi−1|<ε
+- Wariant B: |f(xi)|<ε
 
 Każda z grup laboratoryjnych implementuje dwa kryteria stopu: 1. osiągnięcie zadanej dokładności obliczeń (wariant A lub B powyżej); 2. wykonanie określonej przez użytkownika liczby iteracji.
 
@@ -20,9 +20,9 @@ W sprawozdaniu oszacować dokładność obu metod. Porównać ich skuteczność:
 Prowadzący może zrezygnować z porównywania ze sobą dwóch metod znajdowania miejsca zerowego. W tej sytuacji zamiast metody bisekcji należy zaimplementować metodę optymalizacji jednowymiarowej na przedziale w wariancie przydzielonym przez prowadzącego.
 
 Metody znajdowania maksimum:
-Wariant 4: Metoda dychotomii
-Wariant 5: Metoda Fibonacci
-Wariant 6: Metoda złotego podziału
+- Wariant 4: Metoda dychotomii
+- Wariant 5: Metoda Fibonacci
+- Wariant 6: Metoda złotego podziału
 
 Ponieważ metody te działają poprawnie jedynie na przedziale unimodalnym, należy zaimplementować wyznaczanie przedziału unimodalnego z podaną przez użytkownika dokładnością. Program powinien umożliwiać wybranie jednego z dwóch warunków stopu. Pierwszy warunek stopu to wykonanie zadanej ilości iteracji. Drugi warunek stopu to zawężenie przedziału poszukiwań do wartości podanej przez użytkownika. W sprawozdaniu należy zamieścić analizę zaimplementowanej metody (analogicznie do analizy metod szukania miejsca zerowego).
 
