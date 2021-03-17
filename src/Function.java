@@ -1,2 +1,5 @@
-package PACKAGE_NAME;public interface Function {
+public interface Function {
+
+    public double calculate(double x);
+
 }
