@@ -8,8 +8,8 @@ Metody wyznaczania miejsca zerowego:
 - Wariant 3: Regula falsi
 
 Oszacowanie dokładności wyniku:
-- Wariant A: |xi−xi−1|<ε
-- Wariant B: |f(xi)|<ε
+- Wariant A: |x<sub>i</sub>−x<sub>i−1</sub>|<ε
+- Wariant B: |f(x<sub>i</sub>)|<ε
 
 Każda z grup laboratoryjnych implementuje dwa kryteria stopu: 1. osiągnięcie zadanej dokładności obliczeń (wariant A lub B powyżej); 2. wykonanie określonej przez użytkownika liczby iteracji.
 
