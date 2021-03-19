@@ -1,9 +1,12 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class Bisection {
-    public static double bisection(Function function, double x1, double x2, double condition, boolean accuracy){
+    public static Map<String, Number> bisection(Function function, double x1, double x2, double condition, boolean accuracy){
         
-        if((x1*x2 > 0) || (x1 == x2)){
+        if((function.calculate(x1)* function.calculate(x2) > 0) || (x1 == x2)){
             System.out.println("Podano nieprawidłowe granice przedziału");
-            return 0;
+            return null;
         }
         
         if (x1 > x2){
@@ -33,6 +36,10 @@ public class Bisection {
             }
         } while (!stop);
         System.out.println("Liczba iteracji: " + step);
-        return (x1 + x2)/2;
+        Map<String, Number> values = new HashMap<>();
+        values.put("iterations", step);
+        values.put("result", (x1 + x2)/2);
+        
+        return values;
     }
 }
