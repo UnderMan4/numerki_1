@@ -110,14 +110,17 @@ public class App {
         if (selectedFunction == 'A'){
             if (function_a.calculate(intervalStartDouble)* function_a.calculate(intervalEndDouble) > 0){
                 JOptionPane.showMessageDialog(frame, "Program nie będzie w stanie wykonać obliczeń\nmetodą bisekcji dla zadanego przedziału.\nKliknij OK aby kontynuować");
+                bisectionMethod = false;
             }
         } else if (selectedFunction == 'B'){
             if (function_b.calculate(intervalStartDouble)* function_b.calculate(intervalEndDouble) > 0){
                 JOptionPane.showMessageDialog(frame, "Program nie będzie w stanie wykonać obliczeń\nmetodą bisekcji dla zadanego przedziału.\nKliknij OK aby kontynuować");
+                bisectionMethod = false;
             }
         } else if (selectedFunction == 'C'){
             if (function_c.calculate(intervalStartDouble)* function_c.calculate(intervalEndDouble) > 0){
                 JOptionPane.showMessageDialog(frame, "Program nie będzie w stanie wykonać obliczeń\nmetodą bisekcji dla zadanego przedziału.\nKliknij OK aby kontynuować");
+                bisectionMethod = false;
             }
         }
         
@@ -152,6 +155,18 @@ public class App {
         
         
         if (bisectionMethod){
+//            Tutaj odkomentuj a zakomentuj albo usun niżej zeby działało z sieczną
+            
+//            JOptionPane.showMessageDialog(null, 
+//                    String.format("""
+//                            METODA BISEKCJI
+//                            liczba iteracji: %d
+//                            wynik: %.3f
+//                            
+//                            METODA SIECZNYCH
+//                            liczba iteracji: %d
+//                            wynik: %.3f""", bisectionResult.get("iterations"), bisectionResult.get("result"), 
+//                            secantResult.get("iterations"), secantResult.get("result")));
             JOptionPane.showMessageDialog(null, 
                     String.format("""
                             METODA BISEKCJI
@@ -159,9 +174,18 @@ public class App {
                             wynik: %.3f
                             
                             METODA SIECZNYCH
+                            liczba iteracji: 
+                            wynik: """, bisectionResult.get("iterations"), bisectionResult.get("result")));
+        } else {
+            JOptionPane.showMessageDialog(null, 
+                    String.format("""
+                            METODA BISEKCJI
+                            liczba iteracji: brak
+                            wynik: brak
+                            
+                            METODA SIECZNYCH
                             liczba iteracji: %d
-                            wynik: %.3f""", bisectionResult.get("iterations"), bisectionResult.get("result"), 
-                            secantResult.get("iterations"), secantResult.get("result")));
+                            wynik: %.3f""", secantResult.get("iterations"), secantResult.get("result")));
         }
         
         
