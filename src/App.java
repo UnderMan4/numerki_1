@@ -159,8 +159,9 @@ public class App {
                             wynik: %.3f
                             
                             METODA SIECZNYCH
-                            liczba iteracji: 
-                            wynik: """, bisectionResult.get("iterations"), bisectionResult.get("result")));
+                            liczba iteracji: %d
+                            wynik: %.3f""", bisectionResult.get("iterations"), bisectionResult.get("result"), 
+                            secantResult.get("iterations"), secantResult.get("result")));
         }
         
         
@@ -260,7 +261,7 @@ public class App {
         frame.add(buttonStart);
         
         frame.setSize(640, 230);
-//        frame.setLocationRelativeTo(null);
+        frame.setLocationRelativeTo(null);
         frame.setLayout(null);
         frame.setVisible(true);
         
