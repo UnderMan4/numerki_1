@@ -1,9 +1,9 @@
 import java.util.HashMap;
 import java.util.Map;
 
-public class Sieczna {
+public class Secant {
 
-    public static Map<String, Number> sieczna(Function fun, double x_g1, double x_g2, double war, boolean kryt) {
+    public static Map<String, Number> secant(Function fun, double x_g1, double x_g2, double war, boolean kryt) {
 
         // Jeżeli kryt == true to uzywamy kryterium stopu bazujacego na epsilonie, jezeli false, to na iteracjach
 

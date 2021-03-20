@@ -122,14 +122,17 @@ public class App {
         if (selectedFunction == 'A'){
             if (function_a.calculate(intervalStartDouble)* function_a.calculate(intervalEndDouble) > 0){
                 JOptionPane.showMessageDialog(frame, "Program nie będzie w stanie wykonać obliczeń\nmetodą bisekcji dla zadanego przedziału.\nKliknij OK aby kontynuować");
+                bisectionMethod = false;
             }
         } else if (selectedFunction == 'B'){
             if (function_b.calculate(intervalStartDouble)* function_b.calculate(intervalEndDouble) > 0){
                 JOptionPane.showMessageDialog(frame, "Program nie będzie w stanie wykonać obliczeń\nmetodą bisekcji dla zadanego przedziału.\nKliknij OK aby kontynuować");
+                bisectionMethod = false;
             }
         } else if (selectedFunction == 'C'){
             if (function_c.calculate(intervalStartDouble)* function_c.calculate(intervalEndDouble) > 0){
                 JOptionPane.showMessageDialog(frame, "Program nie będzie w stanie wykonać obliczeń\nmetodą bisekcji dla zadanego przedziału.\nKliknij OK aby kontynuować");
+                bisectionMethod = false;
             }
         }
         
@@ -145,43 +148,70 @@ public class App {
         if (selectedFunction == 'A'){
             if (selectedCriterion == 'A') {
                 bisectionResult = Bisection.bisection(function_a, intervalStartDouble, intervalEndDouble, criterionDouble, true);
+                secantResult = Secant.secant(function_a, intervalStartDouble, intervalEndDouble, criterionDouble, true);
             } else {
                 bisectionResult = Bisection.bisection(function_a, intervalStartDouble, intervalEndDouble, criterionDouble, false);
+                secantResult = Secant.secant(function_a, intervalStartDouble, intervalEndDouble, criterionDouble, false);
             }
         } else if (selectedFunction == 'B'){
             if (selectedCriterion == 'A') {
                 bisectionResult = Bisection.bisection(function_b, intervalStartDouble, intervalEndDouble, criterionDouble, true);
+                secantResult = Secant.secant(function_b, intervalStartDouble, intervalEndDouble, criterionDouble, true);
             } else {
                 bisectionResult = Bisection.bisection(function_b, intervalStartDouble, intervalEndDouble, criterionDouble, false);
+                secantResult = Secant.secant(function_b, intervalStartDouble, intervalEndDouble, criterionDouble, false);
             }
         } else if (selectedFunction == 'C'){
             if (selectedCriterion == 'A') {
                 bisectionResult = Bisection.bisection(function_c, intervalStartDouble, intervalEndDouble, criterionDouble, true);
+                secantResult = Secant.secant(function_c, intervalStartDouble, intervalEndDouble, criterionDouble, true);
             } else {
                 bisectionResult = Bisection.bisection(function_c, intervalStartDouble, intervalEndDouble, criterionDouble, false);
+                secantResult = Secant.secant(function_c, intervalStartDouble, intervalEndDouble, criterionDouble, false);
             }
         }
         
         
-//        if (bisectionMethod){
-//            JOptionPane.showMessageDialog(null,
+        if (bisectionMethod){
+//            Tutaj odkomentuj a zakomentuj albo usun niżej zeby działało z sieczną
+            
+//            JOptionPane.showMessageDialog(null, 
 //                    String.format("""
 //                            METODA BISEKCJI
 //                            liczba iteracji: %d
 //                            wynik: %.3f
 //
 //                            METODA SIECZNYCH
-//                            liczba iteracji:
-//                            wynik: """, bisectionResult.get("iterations"), bisectionResult.get("result")));
-//        }
-        
-        
+//                            liczba iteracji: %d
+//                            wynik: %.3f""", bisectionResult.get("iterations"), bisectionResult.get("result"), 
+//                            secantResult.get("iterations"), secantResult.get("result")));
+            JOptionPane.showMessageDialog(null, 
+                    String.format("""
+                            METODA BISEKCJI
+                            liczba iteracji: %d
+                            wynik: %.3f
+                            
+                            METODA SIECZNYCH
+                            liczba iteracji: %d 
+                            wynik: %.3f""", bisectionResult.get("iterations"), bisectionResult.get("result"),
+                                            secantResult.get("iterations"), secantResult.get("result")));
+        } else {
+            JOptionPane.showMessageDialog(null, 
+                    String.format("""
+                            METODA BISEKCJI
+                            liczba iteracji: brak
+                            wynik: brak
+                            
+                            METODA SIECZNYCH
+                            liczba iteracji: %d
+                            wynik: %.3f""", secantResult.get("iterations"), secantResult.get("result")));
+        }
     }
 
     public static void main(String args[]) {
 
         double x_g1 = -5, x_g2 = 1;
-        double x0_sieczna_a = (double) Sieczna.sieczna(function_b,-5, 1, 0.0001, true).get("result");
+        double x0_sieczna_a = (double) Secant.secant(function_b,-5, 1, 0.0001, true).get("result");
 //        plot(function_b, x0_sieczna_a, x_g1, x_g2);
 //        double bisection_a = Bisection.bisection(function_a, -2, 2, 0.0001, true);
 //        System.out.printf("%.10f", bisection_a);
@@ -272,7 +302,7 @@ public class App {
         frame.add(buttonStart);
         
         frame.setSize(640, 230);
-//        frame.setLocationRelativeTo(null);
+        frame.setLocationRelativeTo(null);
         frame.setLayout(null);
         frame.setVisible(true);
         
