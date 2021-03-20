@@ -23,9 +23,10 @@ public class App {
         return Math.cos(x);
     };
 
-    private static void plot(String fun, double x0, double x_g1, double x_g2) {
+    private static void plot(Function fun, double x0, double x_g1, double x_g2) {
         JavaPlot p = new JavaPlot(false);
 
+        // Oznaczamy na wykresie os OX
         PlotStyle zeroStyle = new PlotStyle();
         zeroStyle.setStyle(Style.LINES);
         zeroStyle.setLineType(NamedPlotColor.BLACK);
@@ -34,11 +35,20 @@ public class App {
         zeroLine.setPlotStyle(zeroStyle);
         p.addPlot(zeroLine);
 
+        // Ustawia parametry reprezentacji graficznej funkcji
         PlotStyle lineStyle = new PlotStyle();
         lineStyle.setStyle(Style.LINES);
         lineStyle.setLineType(NamedPlotColor.BLUE);
         lineStyle.setLineWidth(4);
-        FunctionPlot functionLine = new FunctionPlot(fun);
+        // Oblicza zbiot punktow na bazie ktorego zarysowywana bedzie funkcja
+        double[][] functionPoints = new double[100][2];
+        int i = 0;
+        for (double d = x_g1; d < x_g2 && i < 100; d += (x_g2 - x_g1)/100) {
+            functionPoints[i][0] = d;
+            functionPoints[i][1] = fun.calculate(d);
+            i++;
+        }
+        DataSetPlot functionLine = new DataSetPlot(functionPoints);
         functionLine.setPlotStyle(lineStyle);
         p.addPlot(functionLine);
         p.getAxis("x").setBoundaries(x_g1, x_g2);
@@ -47,11 +57,13 @@ public class App {
         pointStyle.setStyle(Style.DOTS);
         pointStyle.setLineType(NamedPlotColor.RED);
         pointStyle.setLineWidth(10);
+        // Zarysowuje miejsce zerowe
         double[][] plot = {{x0, 0}};
         DataSetPlot points = new DataSetPlot(plot);
         points.setPlotStyle(pointStyle);
         p.addPlot(points);
 
+        // Zmienia legende na niewidoczna
         p.set("nokey", "");
         p.plot();
     }
@@ -151,17 +163,17 @@ public class App {
         }
         
         
-        if (bisectionMethod){
-            JOptionPane.showMessageDialog(null, 
-                    String.format("""
-                            METODA BISEKCJI
-                            liczba iteracji: %d
-                            wynik: %.3f
-                            
-                            METODA SIECZNYCH
-                            liczba iteracji: 
-                            wynik: """, bisectionResult.get("iterations"), bisectionResult.get("result")));
-        }
+//        if (bisectionMethod){
+//            JOptionPane.showMessageDialog(null,
+//                    String.format("""
+//                            METODA BISEKCJI
+//                            liczba iteracji: %d
+//                            wynik: %.3f
+//
+//                            METODA SIECZNYCH
+//                            liczba iteracji:
+//                            wynik: """, bisectionResult.get("iterations"), bisectionResult.get("result")));
+//        }
         
         
     }
@@ -169,8 +181,8 @@ public class App {
     public static void main(String args[]) {
 
         double x_g1 = -5, x_g2 = 1;
-        double x0_sieczna_a = Sieczna.sieczna(function_b,-5, 1, 0.0001, true);
-//        plot("0.5*x**3 - 3*x**2 + 5*x + 3", x0_sieczna_a, x_g1, x_g2);
+        double x0_sieczna_a = (double) Sieczna.sieczna(function_b,-5, 1, 0.0001, true).get("result");
+//        plot(function_b, x0_sieczna_a, x_g1, x_g2);
 //        double bisection_a = Bisection.bisection(function_a, -2, 2, 0.0001, true);
 //        System.out.printf("%.10f", bisection_a);
         

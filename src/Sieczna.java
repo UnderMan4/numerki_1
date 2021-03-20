@@ -1,6 +1,9 @@
+import java.util.HashMap;
+import java.util.Map;
+
 public class Sieczna {
 
-    public static double sieczna(Function fun, double x_g1, double x_g2, double war, boolean kryt) {
+    public static Map<String, Number> sieczna(Function fun, double x_g1, double x_g2, double war, boolean kryt) {
 
         // Jeżeli kryt == true to uzywamy kryterium stopu bazujacego na epsilonie, jezeli false, to na iteracjach
 
@@ -10,6 +13,8 @@ public class Sieczna {
 
         double a, b, x0 = 0, y0, epsi, prev_x = 0;
         boolean stop = false;
+
+        HashMap<String, Number> values = new HashMap<>();
 
         do {
 
@@ -21,7 +26,10 @@ public class Sieczna {
             b = y_g1 - (a * x_g1);
 
             if (a == 0) {
-                return 0;
+                values.put("iterations", iter);
+                values.put("result", 0);
+
+                return values;
             }
 
             x0 = (0 - b) / a;
@@ -56,9 +64,10 @@ public class Sieczna {
             iter++;
         } while (stop != true);
 
-        System.out.println("Ilość iteracji dla metody siecznych: " + Integer.toString(iter));
+        values.put("iterations", iter);
+        values.put("result", x0);
 
-        return x0;
+        return values;
     }
 
 }
