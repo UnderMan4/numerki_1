@@ -21,10 +21,10 @@ public class App {
         return Math.pow(5, x) - 0.5;
     };
     private static Function function_c = (x) -> {
-        return Math.sin(x);
+        return Math.cos(x);
     };
 
-    private static void plot(Function fun, double x0, double x_g1, double x_g2) {
+    private static void plot(Function fun, double x0Bisection, double x0Secant, double x_g1, double x_g2, boolean bisection) {
         JavaPlot p = new JavaPlot(false);
 
         // Oznaczamy na wykresie os OX
@@ -35,6 +35,12 @@ public class App {
         FunctionPlot zeroLine = new FunctionPlot("0");
         zeroLine.setPlotStyle(zeroStyle);
         p.addPlot(zeroLine);
+        
+//        PlotStyle intervalStyle = new PlotStyle();
+//        intervalStyle.setStyle(Style.FSTEPS);
+//        intervalStyle.setLineType(NamedPlotColor.AQUAMARINE);
+//        intervalStyle.setLineWidth(2);
+//        FunctionPlot intervalLine = new FunctionPlot();
 
         // Ustawia parametry reprezentacji graficznej funkcji
         PlotStyle lineStyle = new PlotStyle();
@@ -54,15 +60,29 @@ public class App {
         p.addPlot(functionLine);
         p.getAxis("x").setBoundaries(x_g1, x_g2);
 
-        PlotStyle pointStyle = new PlotStyle();
-        pointStyle.setStyle(Style.DOTS);
-        pointStyle.setLineType(NamedPlotColor.RED);
-        pointStyle.setLineWidth(10);
-        // Zarysowuje miejsce zerowe
-        double[][] plot = {{x0, 0}};
-        DataSetPlot points = new DataSetPlot(plot);
-        points.setPlotStyle(pointStyle);
-        p.addPlot(points);
+        PlotStyle pointStyleBisection = new PlotStyle();
+        pointStyleBisection.setStyle(Style.DOTS);
+        pointStyleBisection.setLineType(NamedPlotColor.RED);
+        pointStyleBisection.setLineWidth(10);
+        
+        PlotStyle pointStyleSecant = new PlotStyle();
+        pointStyleSecant.setStyle(Style.DOTS);
+        pointStyleSecant.setLineType(NamedPlotColor.GREEN);
+        pointStyleSecant.setLineWidth(10);
+        // Zarysowuje miejsce zerowe dla bisekcji
+        if (bisection){
+            double[][] plotBisection = {{x0Bisection, 0}};
+            DataSetPlot pointsBisection = new DataSetPlot(plotBisection);
+            pointsBisection.setPlotStyle(pointStyleBisection);
+            p.addPlot(pointsBisection);
+        }
+        
+        
+        // Zarysowuje miejsce zerowe dla siecznej
+        double[][] plotSecant = {{x0Secant, 0}};
+        DataSetPlot pointsSecant = new DataSetPlot(plotSecant);
+        pointsSecant.setPlotStyle(pointStyleSecant);
+        p.addPlot(pointsSecant);
 
         // Zmienia legende na niewidoczna
         p.set("nokey", "");
@@ -143,43 +163,53 @@ public class App {
             bisectionResult = Bisection.bisection(temp.get(selectedFunction), intervalStartDouble, intervalEndDouble, criterionDouble, false);
             secantResult = Secant.secant(temp.get(selectedFunction), intervalStartDouble, intervalEndDouble, criterionDouble, false);
         }
-
+        String message = "";
         if (bisectionMethod){
-//            Tutaj odkomentuj a zakomentuj albo usun niżej zeby działało z sieczną
-            
-//            JOptionPane.showMessageDialog(null, 
-//                    String.format("""
-//                            METODA BISEKCJI
-//                            liczba iteracji: %d
-//                            wynik: %.3f
-//
-//                            METODA SIECZNYCH
-//                            liczba iteracji: %d
-//                            wynik: %.3f""", bisectionResult.get("iterations"), bisectionResult.get("result"), 
-//                            secantResult.get("iterations"), secantResult.get("result")));
-            JOptionPane.showMessageDialog(null, 
-                    String.format("""
-                            METODA BISEKCJI
+            message = String.format("""
+                            METODA BISEKCJI (czerwony)
                             liczba iteracji: %d
                             wynik: %.3f
                             
-                            METODA SIECZNYCH
+                            METODA SIECZNYCH (zielony)
                             liczba iteracji: %d 
-                            wynik: %.3f""", bisectionResult.get("iterations").intValue(), bisectionResult.get("result").doubleValue(),
-                                            secantResult.get("iterations").intValue(), secantResult.get("result").doubleValue()));
+                            wynik: %.3f""", 
+                    bisectionResult.get("iterations").intValue(), bisectionResult.get("result").doubleValue(), 
+                    secantResult.get("iterations").intValue(), secantResult.get("result").doubleValue());
         } else {
-            System.out.println(secantResult.get("result"));
-            JOptionPane.showMessageDialog(null, 
-                    String.format("""
-                            METODA BISEKCJI
+            message = String.format("""
+                            METODA BISEKCJI (czerwony)
                             liczba iteracji: brak
                             wynik: brak
                             
-                            METODA SIECZNYCH
+                            METODA SIECZNYCH (zielony)
                             liczba iteracji: %d
-                            wynik: %.3f""", secantResult.get("iterations").intValue(), secantResult.get("result").doubleValue()));
+                            wynik: %.3f""", 
+                    secantResult.get("iterations").intValue(), secantResult.get("result").doubleValue());
         }
+        
+        if (secantResult.get("status").intValue() == 1){
+            message = message + """
+                            
+                            
+                            UWAGA!  Na zadanym przedziale poprowadzona 
+                            sieczna w trakcie rozwiązywania przyjęła współczynnik 
+                            kierunkowy a=0. W związku z tym otrzymany wynik 
+                            może nie być zgodny z prawdą.""";
+        }
+        
+        double intervalSize = Math.abs(intervalStartDouble - intervalEndDouble);
+        if (bisectionMethod){
+            plot(temp.get(selectedFunction), bisectionResult.get("result").doubleValue(), 
+                    secantResult.get("result").doubleValue(), intervalStartDouble - intervalSize/10, 
+                    intervalEndDouble + intervalSize/10, true);
+        } else {
+            plot(temp.get(selectedFunction), 0
+                    , secantResult.get("result").doubleValue(), intervalStartDouble - intervalSize/10, 
+                    intervalEndDouble + intervalSize/10, false);
+        }
+        JOptionPane.showMessageDialog(frame, message);
     }
+    
 
     public static void main(String args[]) {
 
@@ -278,6 +308,7 @@ public class App {
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
         frame.setVisible(true);
+        
         
         buttonStart.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
