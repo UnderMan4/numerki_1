@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.Map;
 
 public class App {
@@ -20,7 +21,7 @@ public class App {
         return Math.pow(5, x) - 0.5;
     };
     private static Function function_c = (x) -> {
-        return Math.cos(x);
+        return Math.sin(x);
     };
 
     private static void plot(Function fun, double x0, double x_g1, double x_g2) {
@@ -118,60 +119,31 @@ public class App {
         
         char selectedFunction = functionGroup.getSelection().getActionCommand().toCharArray()[0];
         char selectedCriterion = criterionGroup.getSelection().getActionCommand().toCharArray()[0];
-        
-        if (selectedFunction == 'A'){
-            if (function_a.calculate(intervalStartDouble)* function_a.calculate(intervalEndDouble) > 0){
-                JOptionPane.showMessageDialog(frame, "Program nie będzie w stanie wykonać obliczeń\nmetodą bisekcji dla zadanego przedziału.\nKliknij OK aby kontynuować");
-                bisectionMethod = false;
-            }
-        } else if (selectedFunction == 'B'){
-            if (function_b.calculate(intervalStartDouble)* function_b.calculate(intervalEndDouble) > 0){
-                JOptionPane.showMessageDialog(frame, "Program nie będzie w stanie wykonać obliczeń\nmetodą bisekcji dla zadanego przedziału.\nKliknij OK aby kontynuować");
-                bisectionMethod = false;
-            }
-        } else if (selectedFunction == 'C'){
-            if (function_c.calculate(intervalStartDouble)* function_c.calculate(intervalEndDouble) > 0){
-                JOptionPane.showMessageDialog(frame, "Program nie będzie w stanie wykonać obliczeń\nmetodą bisekcji dla zadanego przedziału.\nKliknij OK aby kontynuować");
-                bisectionMethod = false;
-            }
+
+        Map<Character, Function> temp = new HashMap<>();
+        temp.put('A', function_a);
+        temp.put('B', function_b);
+        temp.put('C', function_c);
+
+
+        if (temp.get(selectedFunction).calculate(intervalStartDouble)* temp.get(selectedFunction).calculate(intervalEndDouble) > 0){
+            JOptionPane.showMessageDialog(frame, "Program nie będzie w stanie wykonać obliczeń\nmetodą bisekcji dla zadanego przedziału.\nKliknij OK aby kontynuować");
+            bisectionMethod = false;
         }
-        
-        
+
         double criterionDouble = Double.parseDouble(criterionString);
         
         Map<String, Number> bisectionResult = null;
         Map<String, Number> secantResult = null;
-        
-        //            Bisection.bisection(function_a, -2, 2, 0.0001, true);
-        
-        
-        if (selectedFunction == 'A'){
-            if (selectedCriterion == 'A') {
-                bisectionResult = Bisection.bisection(function_a, intervalStartDouble, intervalEndDouble, criterionDouble, true);
-                secantResult = Secant.secant(function_a, intervalStartDouble, intervalEndDouble, criterionDouble, true);
-            } else {
-                bisectionResult = Bisection.bisection(function_a, intervalStartDouble, intervalEndDouble, criterionDouble, false);
-                secantResult = Secant.secant(function_a, intervalStartDouble, intervalEndDouble, criterionDouble, false);
-            }
-        } else if (selectedFunction == 'B'){
-            if (selectedCriterion == 'A') {
-                bisectionResult = Bisection.bisection(function_b, intervalStartDouble, intervalEndDouble, criterionDouble, true);
-                secantResult = Secant.secant(function_b, intervalStartDouble, intervalEndDouble, criterionDouble, true);
-            } else {
-                bisectionResult = Bisection.bisection(function_b, intervalStartDouble, intervalEndDouble, criterionDouble, false);
-                secantResult = Secant.secant(function_b, intervalStartDouble, intervalEndDouble, criterionDouble, false);
-            }
-        } else if (selectedFunction == 'C'){
-            if (selectedCriterion == 'A') {
-                bisectionResult = Bisection.bisection(function_c, intervalStartDouble, intervalEndDouble, criterionDouble, true);
-                secantResult = Secant.secant(function_c, intervalStartDouble, intervalEndDouble, criterionDouble, true);
-            } else {
-                bisectionResult = Bisection.bisection(function_c, intervalStartDouble, intervalEndDouble, criterionDouble, false);
-                secantResult = Secant.secant(function_c, intervalStartDouble, intervalEndDouble, criterionDouble, false);
-            }
+
+        if (selectedCriterion == 'A') {
+            bisectionResult = Bisection.bisection(temp.get(selectedFunction), intervalStartDouble, intervalEndDouble, criterionDouble, true);
+            secantResult = Secant.secant(temp.get(selectedFunction), intervalStartDouble, intervalEndDouble, criterionDouble, true);
+        } else {
+            bisectionResult = Bisection.bisection(temp.get(selectedFunction), intervalStartDouble, intervalEndDouble, criterionDouble, false);
+            secantResult = Secant.secant(temp.get(selectedFunction), intervalStartDouble, intervalEndDouble, criterionDouble, false);
         }
-        
-        
+
         if (bisectionMethod){
 //            Tutaj odkomentuj a zakomentuj albo usun niżej zeby działało z sieczną
             
@@ -193,9 +165,10 @@ public class App {
                             
                             METODA SIECZNYCH
                             liczba iteracji: %d 
-                            wynik: %.3f""", bisectionResult.get("iterations"), bisectionResult.get("result"),
-                                            secantResult.get("iterations"), secantResult.get("result")));
+                            wynik: %.3f""", bisectionResult.get("iterations").intValue(), bisectionResult.get("result").doubleValue(),
+                                            secantResult.get("iterations").intValue(), secantResult.get("result").doubleValue()));
         } else {
+            System.out.println(secantResult.get("result"));
             JOptionPane.showMessageDialog(null, 
                     String.format("""
                             METODA BISEKCJI
@@ -204,7 +177,7 @@ public class App {
                             
                             METODA SIECZNYCH
                             liczba iteracji: %d
-                            wynik: %.3f""", secantResult.get("iterations"), secantResult.get("result")));
+                            wynik: %.3f""", secantResult.get("iterations").intValue(), secantResult.get("result").doubleValue()));
         }
     }
 

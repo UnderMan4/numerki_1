@@ -26,8 +26,10 @@ public class Secant {
             b = y_g1 - (a * x_g1);
 
             if (a == 0) {
+                // Status zwraca kod bledu w przypadku wystapienia siecznej rownoleglej do osi OX
                 values.put("iterations", iter);
                 values.put("result", 0);
+                values.put("status", 1);
 
                 return values;
             }
@@ -62,10 +64,11 @@ public class Secant {
                 }
             }
             iter++;
-        } while (stop != true);
+        } while (stop != true && iter < 500000);
 
         values.put("iterations", iter);
         values.put("result", x0);
+        values.put("status", 0);
 
         return values;
     }
