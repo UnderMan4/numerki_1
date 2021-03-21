@@ -18,6 +18,13 @@ public class Bisection {
         boolean stop = false;
         double x0;
         int step = 0;
+        Map<String, Number> values = new HashMap<>();
+        
+        if (function.calculate((x1+x2)/2) == 0){
+            values.put("iterations", step);
+            values.put("result", (x1 + x2)/2);
+            return values;
+        }
         
 
         do {
@@ -36,7 +43,6 @@ public class Bisection {
             }
         } while (!stop);
         System.out.println("Liczba iteracji: " + step);
-        Map<String, Number> values = new HashMap<>();
         values.put("iterations", step);
         values.put("result", (x1 + x2)/2);
         
