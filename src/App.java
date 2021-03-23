@@ -18,6 +18,7 @@ public class App {
         return 0.5*x*x*x - 3*x*x + 5*x + 3;
     };
     private static Function function_b = (x) -> {
+//        return -0.5*x*x*x - 3*x*x + 5*x + 60;
         return Math.pow(5, x) - 0.5;
     };
     private static Function function_c = (x) -> {
@@ -186,11 +187,11 @@ public class App {
             message = String.format("""
                             METODA BISEKCJI (czerwony)
                             liczba iteracji: %d
-                            wynik: %.3f
+                            wynik: %.5f
                             
                             METODA SIECZNYCH (zielony)
                             liczba iteracji: %d 
-                            wynik: %.3f""", 
+                            wynik: %.5f""", 
                     bisectionResult.get("iterations").intValue(), bisectionResult.get("result").doubleValue(), 
                     secantResult.get("iterations").intValue(), secantResult.get("result").doubleValue());
         } else {
@@ -201,7 +202,7 @@ public class App {
                             
                             METODA SIECZNYCH (zielony)
                             liczba iteracji: %d
-                            wynik: %.3f""", 
+                            wynik: %.5f""", 
                     secantResult.get("iterations").intValue(), secantResult.get("result").doubleValue());
         }
         
@@ -220,12 +221,12 @@ public class App {
         
         if (bisectionMethod){
             plot(function, bisectionResult.get("result").doubleValue(), 
-                    secantResult.get("result").doubleValue(), intervalStartDouble - intervalSize/10, 
-                    intervalEndDouble + intervalSize/10, true);
+                    secantResult.get("result").doubleValue(), intervalStartDouble - intervalSize/2, 
+                    intervalEndDouble + intervalSize/2, true);
         } else {
             plot(function, 0
-                    , secantResult.get("result").doubleValue(), intervalStartDouble - intervalSize/10, 
-                    intervalEndDouble + intervalSize/10, false);
+                    , secantResult.get("result").doubleValue(), intervalStartDouble - intervalSize/2, 
+                    intervalEndDouble + intervalSize/2, false);
         }
         JOptionPane.showMessageDialog(frame, message);
     }
@@ -346,6 +347,8 @@ public class App {
         frame.setSize(640, 305);
         frame.setLocationRelativeTo(null);
         frame.setLayout(null);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
         frame.setVisible(true);
         
         

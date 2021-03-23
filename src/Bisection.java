@@ -15,6 +15,13 @@ public class Bisection {
             x2 = temp;
         }
         
+        boolean decreasing = false;
+        
+        if (function.calculate(x1) > 0){
+            decreasing = true;
+        }
+        
+        
         boolean stop = false;
         double x0;
         int step = 0;
@@ -25,22 +32,33 @@ public class Bisection {
             values.put("result", (x1 + x2)/2);
             return values;
         }
+        double last = function.calculate((x1+x2)/2);
         
-
         do {
             x0 = (x1 + x2)/2;
 //            System.out.printf("%.4f   %.4f   %.4f \n", x1, x0, x2);
             
-            if (function.calculate(x0) > 0){
-                x2 = x0;
+            if (decreasing){
+                if (function.calculate(x0) > 0){
+                    x1 = x0;
+                } else {
+                    x2 = x0;
+                }
             } else {
-                x1 = x0;
+                if (function.calculate(x0) > 0){
+                    x2 = x0;
+                } else {
+                    x1 = x0;
+                }
             }
+            
 //            System.out.println(x0);
             step++;
-            if ((accuracy && (Math.abs(x1-x2) < condition)) || (!accuracy && (step == (int)condition))){
+            if ((accuracy && (Math.abs(function.calculate((x1+x2)/2)-last) < condition)) || (!accuracy && (step == (int)condition))){
                 stop = true;
             }
+            last = function.calculate((x1+x2)/2);
+//            System.out.printf("%.100f\n", Math.abs(function.calculate((x1+x2)/2)-last));
         } while (!stop);
         System.out.println("Liczba iteracji: " + step);
         values.put("iterations", step);
